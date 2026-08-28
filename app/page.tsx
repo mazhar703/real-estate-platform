@@ -94,7 +94,7 @@ export default function RealEstatePlatform() {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Bedrooms</label>
-                  <select value={beds} onChange={(e) => setBeds(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  <select value={beds} onChange={(e) => setBeds(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-900 bg-white">
                     <option>Any</option>
                     <option>1</option>
                     <option>2</option>
@@ -105,7 +105,7 @@ export default function RealEstatePlatform() {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
-                  <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-900 bg-white">
                     <option value="All">All Cities</option>
                     <option>Rahim Yar Khan</option>
                     <option>Lahore</option>
