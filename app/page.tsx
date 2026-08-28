@@ -17,6 +17,8 @@ export default function RealEstatePlatform() {
   const [beds, setBeds] = useState('Any')
   const [city, setCity] = useState('All')
   const [favorites, setFavorites] = useState([])
+  const [searchProperty, setSearchProperty] = useState('')
+  const [selectedProperty, setSelectedProperty] = useState(null)
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -29,7 +31,8 @@ export default function RealEstatePlatform() {
     const priceMatch = p.price >= minPrice && p.price <= maxPrice
     const bedsMatch = beds === 'Any' || (beds === '4+' ? p.beds >= 4 : p.beds === parseInt(beds))
     const cityMatch = city === 'All' || p.city === city
-    return priceMatch && bedsMatch && cityMatch
+    const searchMatch = p.title.toLowerCase().includes(searchProperty.toLowerCase())
+    return priceMatch && bedsMatch && cityMatch && searchMatch
   })
 
   const toggleFavorite = (id) => {
@@ -58,6 +61,17 @@ export default function RealEstatePlatform() {
               <h2 className="text-xl font-bold text-gray-900 mb-4">Filters</h2>
 
               <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Search</label>
+                  <input
+                    type="text"
+                    placeholder="Search by name..."
+                    value={searchProperty}
+                    onChange={(e) => setSearchProperty(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Price Range</label>
                   <div className="space-y-2">
@@ -137,7 +151,7 @@ export default function RealEstatePlatform() {
                       </div>
                     </div>
 
-                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold text-sm">
+                    <button onClick={() => setSelectedProperty(property)} className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold text-sm">
                       View Details
                     </button>
                   </div>
@@ -147,6 +161,47 @@ export default function RealEstatePlatform() {
           </div>
         </div>
       </main>
+
+      {/* Property Details Modal */}
+      {selectedProperty && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">{selectedProperty.title}</h2>
+              <button onClick={() => setSelectedProperty(null)} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+            </div>
+
+            <div className="text-6xl text-center mb-4">{selectedProperty.image}</div>
+
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Price:</span>
+                <span className="font-bold text-blue-600">Rs {selectedProperty.price.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Bedrooms:</span>
+                <span className="font-bold">{selectedProperty.beds}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Bathrooms:</span>
+                <span className="font-bold">{selectedProperty.baths}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Area:</span>
+                <span className="font-bold">{selectedProperty.area} sq ft</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">City:</span>
+                <span className="font-bold">{selectedProperty.city}</span>
+              </div>
+            </div>
+
+            <button onClick={() => setSelectedProperty(null)} className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
